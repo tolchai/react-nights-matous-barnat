@@ -1,6 +1,71 @@
 import React, { Component } from 'react'
-
+import styled, { ThemeProvider, createGlobalStyle } from 'styled-components'
 import config from './config'
+
+const theme = {
+  red: '#FF0000',
+  black: '#393939',
+  grey: '#3A3A3A',
+  lightgrey: '#E1E1E1',
+  offWhite: '#EDEDED',
+  maxWidth: '1000px',
+  bs: '0 1rem 2rem 0 rgba(0, 0, 0, 0.09)',
+}
+
+const GlobalStyle = createGlobalStyle`
+	html {
+		box-sizing: border-box;
+		font-size: 10px;
+	}
+	*, *:before, *:after {
+		box-sizing: inherit;
+	}
+	body {
+		padding: 0;
+		margin: 0;
+		font-size: 1.5rem;
+		line-height: 2rem;
+		font-family: sans-serif;
+	}
+	a {
+		text-decoration: none;
+		color: ${theme.black};
+	}
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+`
+
+const StyledPage = styled.div`
+  background: white;
+  color: ${props => props.theme.black};
+`
+
+const Header = styled.header`
+  padding: 2rem 0;
+`
+
+const Inner = styled.div`
+  max-width: ${props => props.theme.maxWidth};
+  margin: 0 auto;
+  gridpadding: 2rem;
+`
+
+const Grid = styled.ul`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 2rem;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 4rem;
+`
+
+const GridItem = styled.li`
+  padding: 2rem;
+  border: 1px solid ${props => props.theme.lightgrey};
+  box-shadow: ${props => props.theme.bs};
+`
 
 const getToken = () =>
   fetch(`${config.apiUrl}/oauth/token`, {
@@ -46,22 +111,30 @@ class App extends Component {
 
     return (
       <div>
-        <h1>E-Commerce app</h1>
-        {isLoading && '...'}
-        {!isLoading && (
-          <ul>
-            {data.map(item => (
-              <li key={item.id}>
-                <h2>{item.attributes.name}</h2>
-                <img
-                  src={item.attributes.image_url}
-                  height="60"
-                  alt={item.attributes.description}
-                />
-              </li>
-            ))}
-          </ul>
-        )}
+        <ThemeProvider theme={theme}>
+          <StyledPage>
+            <Inner>
+              <Header>
+                <h1>React Nights Merch</h1>
+              </Header>
+              {isLoading && <p>Loading products...</p>}
+              {!isLoading && (
+                <Grid>
+                  {data.map(item => (
+                    <GridItem key={item.id}>
+                      <img
+                        src={item.attributes.image_url}
+                        alt={item.attributes.description}
+                      />
+                      <h2>{item.attributes.name}</h2>
+                    </GridItem>
+                  ))}
+                </Grid>
+              )}
+            </Inner>
+          </StyledPage>
+        </ThemeProvider>
+        <GlobalStyle />
       </div>
     )
   }
