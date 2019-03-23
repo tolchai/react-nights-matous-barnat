@@ -92,7 +92,7 @@ const getSkus = access_token =>
 class App extends Component {
   state = {
     isLoading: true,
-    products: {},
+    products: [],
   }
 
   async componentDidMount() {
