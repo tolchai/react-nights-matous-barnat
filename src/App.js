@@ -97,18 +97,13 @@ class App extends Component {
 
   async componentDidMount() {
     const { access_token } = await getToken()
-
-    const products = await getSkus(access_token)
-
+    const response = await getSkus(access_token)
+    const products = response.data
     this.setState({ products, isLoading: false })
   }
 
   render() {
-    const {
-      isLoading,
-      products: { data },
-    } = this.state
-
+    const { isLoading, products } = this.state
     return (
       <div>
         <ThemeProvider theme={theme}>
@@ -120,13 +115,13 @@ class App extends Component {
               {isLoading && <p>Loading products...</p>}
               {!isLoading && (
                 <Grid>
-                  {data.map(item => (
-                    <GridItem key={item.id}>
+                  {products.map(product => (
+                    <GridItem key={product.id}>
                       <img
-                        src={item.attributes.image_url}
-                        alt={item.attributes.description}
+                        src={product.attributes.image_url}
+                        alt={product.attributes.description}
                       />
-                      <h2>{item.attributes.name}</h2>
+                      <h2>{product.attributes.name}</h2>
                     </GridItem>
                   ))}
                 </Grid>
