@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 
 import ProductListComponent from './components/ProductList'
-import Layout from '../../components/Layout'
 import Loader from '../../components/Loader'
-import { H1 } from '../../components/Typography'
 
 import { getProducts } from '../../api/get-products'
 
@@ -26,11 +24,10 @@ class ProductList extends Component {
     const { isLoading, products } = this.state
 
     return (
-      <Layout>
-        <H1 textAlign="center">E-Commerce app</H1>
+      <div>
         {isLoading && <Loader />}
         {products && <ProductListComponent products={products} />}
-      </Layout>
+      </div>
     )
   }
 }

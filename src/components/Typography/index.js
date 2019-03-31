@@ -5,9 +5,14 @@ import theme from '../../common/theme'
 const headerFonts = css`
   font-family: circular, serif;
   font-weight: 400;
-  color: ${theme.color.red};
+  color: ${theme.color.black};
   text-transform: uppercase;
   ${textAlign}
+
+  a {
+    color: ${theme.color.black};
+    text-decoration: none;
+  }
 `
 
 export const H1 = styled.h1`
