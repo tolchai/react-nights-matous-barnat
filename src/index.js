@@ -3,23 +3,22 @@ import * as serviceWorker from './serviceWorker'
 import App from './App'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 
-const render = Component => {
+const render = () => {
   ReactDOM.render(
-    <App>
-      <Component />
-    </App>,
+    <Router>
+      <App />
+    </Router>,
     document.getElementById('root')
   )
 }
 
-render(App)
-
 if (module.hot) {
-  module.hot.accept('./App', () => {
-    render(App)
-  })
+  module.hot.accept('./App', render)
 }
+
+render()
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
