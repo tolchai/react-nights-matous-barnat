@@ -1,17 +1,17 @@
-import config from '../config'
 import { getToken } from './get-token'
+import config from '../config'
 
-export const getProduct = async id => {
+export const getProductById = async id => {
   const token = await getToken()
-
-  const res = await fetch(`${config.apiUrl}/api/skus/${id}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  })
-
-  const product = await res.json()
-  return product.data.attributes
+  const response = await fetch(
+    `${config.apiUrl}/api/skus/${id}?include=prices`,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  )
+  const { data, included } = await response.json()
+  return { data, included }
 }

@@ -8,7 +8,6 @@ export const getToken = () =>
     },
     body: JSON.stringify({
       grant_type: 'client_credentials',
-      client_secret: config.clientSecret,
       client_id: config.clientId,
       scope: config.scope,
     }),
