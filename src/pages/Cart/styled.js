@@ -39,7 +39,7 @@ export const Description = styled.span`
   text-align: center;
 `
 
-export const AddButton = styled.button`
+export const RemoveButton = styled.button`
   background: ${theme.color.red};
   padding: 1rem;
   margin-top: 0.5rem;
