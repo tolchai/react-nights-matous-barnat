@@ -19,6 +19,7 @@ class Products extends Component {
   async componentDidMount() {
     if (this.props.products.length === 0) {
       const products = await getProducts()
+      console.log(products)
       this.props.loadProducts(products)
     }
 

@@ -6,8 +6,8 @@ import Layout from '../../components/Layout'
 import Loader from '../../components/Loader'
 import { H1 } from '../../components/Typography'
 import { getProductById } from '../../api/get-product'
+import { loadProducts } from '../../store/products/actions'
 import { addProduct } from '../../store/cartItems/actions'
-// import { loadProducts } from '../../store/products/actions'
 
 import {
   Wrapper,
@@ -28,6 +28,10 @@ class TheProduct extends Component {
     this.setState({ isLoading: true })
     const product = await getProductById(productId)
 
+    let products = []
+    products.push(product.data.attributes)
+
+    this.props.loadProducts(products)
     this.setState({ isLoading: false, product })
   }
 
@@ -45,9 +49,6 @@ class TheProduct extends Component {
 
   handleAddToCart = evt => {
     const { productId } = this.props.match.params
-
-    console.log(productId)
-
     evt.preventDefault()
     this.props.addProduct(productId)
   }
@@ -84,6 +85,7 @@ class TheProduct extends Component {
 const mapStateToProps = () => ({})
 
 const mapDispatchToProps = {
+  loadProducts,
   addProduct,
 }
 
