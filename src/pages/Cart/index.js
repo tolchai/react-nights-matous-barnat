@@ -1,19 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
+import Button from '../../components/Button'
 import Layout from '../../components/Layout'
 import { H1 } from '../../components/Typography'
-
-import { removeProduct } from '../../store/cartItems/actions'
-
-import { RemoveButton } from './styled'
+import { removeProduct } from '../../store/cart/actions'
 
 class CartView extends Component {
-  handleRemoveFromCart = (productId, evt) => {
-    evt.preventDefault()
-    this.props.removeProduct(productId)
-  }
-
   render() {
     return (
       <Layout>
@@ -21,12 +14,15 @@ class CartView extends Component {
         <ul>
           {this.props.items.map(item => (
             <li key={item.product.id}>
-              {item.product.name} - {item.quantity}
-              <RemoveButton
-                onClick={evt => this.handleRemoveFromCart(item.product.id, evt)}
+              <p>
+                {item.product.name} - {item.quantity}
+              </p>
+              <Button
+                type="button"
+                onClick={() => this.props.removeProduct(item.product.id)}
               >
-                Remove from Cart
-              </RemoveButton>
+                Remove
+              </Button>
             </li>
           ))}
         </ul>
@@ -36,19 +32,19 @@ class CartView extends Component {
 }
 
 const mapStateToProps = state => ({
-  items: Object.keys(state.cartItems).map(productId => ({
-    quantity: state.cartItems[productId],
+  items: Object.keys(state.cart).map(productId => ({
+    quantity: state.cart[productId],
     product: state.products.find(p => p.id === productId),
   })),
 })
 
-const mapDispatchToProps = {
+const actionCreators = {
   removeProduct,
 }
 
 const Cart = connect(
   mapStateToProps,
-  mapDispatchToProps
+  actionCreators
 )(CartView)
 
 export { Cart }

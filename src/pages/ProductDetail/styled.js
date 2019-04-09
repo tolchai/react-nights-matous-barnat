@@ -38,12 +38,3 @@ export const Description = styled.span`
   margin: 2rem 0;
   text-align: center;
 `
-
-export const AddButton = styled.button`
-  background: ${theme.color.red};
-  padding: 1rem;
-  margin-top: 0.5rem;
-  border: none;
-  border-radius: ${theme.radius.basic};
-  color: ${theme.color.white};
-`
