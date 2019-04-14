@@ -13,8 +13,8 @@ const Product = ({ node, onAddToCart }) => (
       </TitleWrap>
       <Price>{node.price.formatted_amount}</Price>
       <Button
-        onClick={e => {
-          e.preventDefault()
+        onClick={event => {
+          event.preventDefault()
           onAddToCart(node.id)
         }}
       >
