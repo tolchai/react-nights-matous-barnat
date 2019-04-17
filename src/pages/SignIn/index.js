@@ -27,10 +27,13 @@ class SignInView extends Component {
     try {
       setSubmitting(true)
       const customerToken = await getCustomerToken(values)
+
+      console.log(customerToken)
+
       if (customerToken) {
         this.props.loginUser({
           email: values.email,
-          token: customerToken,
+          id: customerToken.owner_id,
         })
         this.props.history.push('/')
       } else {

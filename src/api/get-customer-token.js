@@ -16,8 +16,10 @@ export const getCustomerToken = async ({ email, password }) => {
     }),
   })
 
-  const { access_token } = await response.json()
+  const apiResponse = await response.json()
+
+  const { access_token, owner_id } = apiResponse
   setToken(access_token)
 
-  return access_token
+  return { access_token, owner_id }
 }
