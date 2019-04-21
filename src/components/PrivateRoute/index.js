@@ -2,28 +2,24 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-// TODO: connect to global state
+import * as routes from '../../routes'
 
-//const isAuthenticated = true
-
-// const Component = ({ component: Test, user, ...rest }) => ({
-
-//   <Test />
-// })
-
-const PrivateRouteView = ({ component: Component, user, ...rest }) => {
+const PrivateRouteComponent = ({
+  isAuthenticated,
+  component: Component,
+  ...rest
+}) => {
   return (
     <Route
       {...rest}
       render={routeProps => {
-        if (user.email) {
+        if (isAuthenticated) {
           return <Component {...routeProps} />
         }
-
         return (
           <Redirect
             to={{
-              pathname: '/signup',
+              pathname: routes.LOGIN,
               state: {
                 from: routeProps.location.pathname,
               },
@@ -36,16 +32,7 @@ const PrivateRouteView = ({ component: Component, user, ...rest }) => {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
+  isAuthenticated: Object.keys(state.customer).length !== 0,
 })
 
-// const actionCreators = {
-//   //removeProduct,
-// }
-
-const PrivateRoute = connect(
-  mapStateToProps
-  //  actionCreators
-)(PrivateRouteView)
-
-export { PrivateRoute }
+export const PrivateRoute = connect(mapStateToProps)(PrivateRouteComponent)

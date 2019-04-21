@@ -1,19 +1,20 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Formik } from 'formik'
+import { connect } from 'react-redux'
 
-import { getCustomerToken } from '../../api/get-customer-token'
 import Layout from '../../components/Layout'
 import { H1 } from '../../components/Typography'
 import { Form, GlobalFormError } from '../../components/Form'
 import { Input } from '../../components/Input'
 import Button from '../../components/Button'
+import * as customerActions from '../../store/customer/actions'
+import * as routes from '../../routes'
 
-import { loginUser } from '../../store/user/actions'
+import { getCustomerToken } from '../../api/customers/get-customer-token'
+import { getCustomer } from '../../api/customers/get-customer'
+import { schema } from './schema'
 
-//import { schema } from './schema'
-
-class SignInView extends Component {
+class LogInPage extends Component {
   state = {
     globalError: '',
   }
@@ -23,24 +24,16 @@ class SignInView extends Component {
     password: '',
   }
 
-  handleSubmit = async (values, { setSubmitting }) => {
+  handleSubmit = async ({ email, password }, { setSubmitting }) => {
     try {
       setSubmitting(true)
-      const customerToken = await getCustomerToken(values)
-
-      console.log(customerToken)
-
-      if (customerToken) {
-        this.props.loginUser({
-          email: values.email,
-          id: customerToken.owner_id,
-        })
-        this.props.history.push('/')
-      } else {
-        this.setState({
-          globalError: 'Wrong credentials',
-        })
-      }
+      const { ownerId } = await getCustomerToken({
+        username: email,
+        password,
+      })
+      const customer = await getCustomer(ownerId)
+      this.props.login(customer)
+      this.props.history.push(routes.ACCOUNT)
     } catch (error) {
       this.setState({
         globalError: error.message,
@@ -54,8 +47,12 @@ class SignInView extends Component {
 
     return (
       <Layout>
-        <H1 textAlign="center">Sign In</H1>
-        <Formik initialValues={this.initialValues} onSubmit={this.handleSubmit}>
+        <H1 textAlign="center">Log In</H1>
+        <Formik
+          initialValues={this.initialValues}
+          validationSchema={schema}
+          onSubmit={this.handleSubmit}
+        >
           {({ handleSubmit, isSubmitting }) => (
             <Form onSubmit={handleSubmit}>
               {Boolean(globalError) && (
@@ -64,7 +61,7 @@ class SignInView extends Component {
               <Input name="email" type="email" label="Email address" />
               <Input name="password" type="password" label="Password" />
               <Button disabled={isSubmitting}>
-                {isSubmitting ? 'Signing In...' : 'Sign In'}
+                {isSubmitting ? 'Logging In...' : 'Log In'}
               </Button>
             </Form>
           )}
@@ -74,15 +71,11 @@ class SignInView extends Component {
   }
 }
 
-const mapStateToProps = () => ({})
-
-const actionCreators = {
-  loginUser,
+const mapDispatchToProps = {
+  login: customerActions.login,
 }
 
-const SignIn = connect(
-  mapStateToProps,
-  actionCreators
-)(SignInView)
-
-export { SignIn }
+export const LogIn = connect(
+  null,
+  mapDispatchToProps
+)(LogInPage)

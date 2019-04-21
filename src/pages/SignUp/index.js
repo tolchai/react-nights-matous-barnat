@@ -1,15 +1,20 @@
 import React, { Component } from 'react'
 import { Formik } from 'formik'
+import { connect } from 'react-redux'
 
-import { createCustomer } from '../../api/customers/create-customer'
 import Layout from '../../components/Layout'
 import { H1 } from '../../components/Typography'
 import { Form, GlobalFormError } from '../../components/Form'
 import { Input } from '../../components/Input'
 import Button from '../../components/Button'
+import * as customerActions from '../../store/customer/actions'
+import * as routes from '../../routes'
+
+import { createCustomer } from '../../api/customers/create-customer'
+import { getCustomer } from '../../api/customers/get-customer'
 import { schema } from './schema'
 
-class SignUp extends Component {
+class SignUpPage extends Component {
   state = {
     globalError: '',
   }
@@ -24,8 +29,10 @@ class SignUp extends Component {
   handleSubmit = async (values, { setSubmitting }) => {
     try {
       setSubmitting(true)
-      await createCustomer(values)
-      this.props.history.push('/account')
+      const { ownerId } = await createCustomer(values)
+      const customer = await getCustomer(ownerId)
+      this.props.login(customer)
+      this.props.history.push(routes.ACCOUNT)
     } catch (error) {
       this.setState({
         globalError: error.message,
@@ -69,4 +76,11 @@ class SignUp extends Component {
   }
 }
 
-export { SignUp }
+const mapDispatchToProps = {
+  login: customerActions.login,
+}
+
+export const SignUp = connect(
+  null,
+  mapDispatchToProps
+)(SignUpPage)

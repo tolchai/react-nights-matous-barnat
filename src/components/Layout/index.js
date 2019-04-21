@@ -1,37 +1,46 @@
 import React, { Component, Fragment } from 'react'
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
 
-const Wrapper = styled.div`
-  padding: 2rem;
-`
+import * as customerActions from '../../store/customer/actions'
+import * as routes from '../../routes'
 
-const Header = styled.header`
-  display: flex;
-  border-bottom: 0.1rem solid gainsboro;
-  justify-content: space-between;
-  padding: 3rem;
-`
-
-const HeaderSection = styled.div``
-
-const StyledLink = styled(Link)`
-  margin: 0 1rem;
-`
+import { removeToken } from '../../utils/token'
+import { removeCustomer } from '../../utils/customer'
+import { Wrapper, Header, HeaderSection, HeaderLink } from './styled'
 
 class Layout extends Component {
+  handleLogout = () => {
+    this.props.logout()
+    removeToken()
+    removeCustomer()
+    this.props.history.push(routes.HOMEPAGE)
+  }
+
   render() {
+    const { isAuthenticated } = this.props
+
     return (
       <Fragment>
         <Header>
           <HeaderSection>
-            <StyledLink to="/">All Products</StyledLink>
+            <HeaderLink to={routes.PRODUCT_LIST}>All Products</HeaderLink>
           </HeaderSection>
           <HeaderSection>
-            <StyledLink to="/cart">My Cart</StyledLink>|
-            <StyledLink to="/account">My Account</StyledLink>|
-            <StyledLink to="/signup">Sign Up</StyledLink>|
-            <StyledLink to="/signin">Sign In</StyledLink>
+            <HeaderLink to={routes.CART}>My Cart</HeaderLink>|
+            {isAuthenticated ? (
+              <>
+                <HeaderLink to={routes.ACCOUNT}>My Account</HeaderLink>|
+                <HeaderLink as="button" onClick={this.handleLogout}>
+                  Logout
+                </HeaderLink>
+              </>
+            ) : (
+              <>
+                <HeaderLink to={routes.LOGIN}>Log In</HeaderLink> |
+                <HeaderLink to={routes.SIGN_UP}>Sign Up</HeaderLink>
+              </>
+            )}
           </HeaderSection>
         </Header>
         <Wrapper>{this.props.children}</Wrapper>
@@ -40,4 +49,17 @@ class Layout extends Component {
   }
 }
 
-export default Layout
+const mapStateToProps = state => ({
+  isAuthenticated: Object.keys(state.customer).length !== 0,
+})
+
+const mapDispatchToProps = {
+  logout: customerActions.logout,
+}
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Layout)
+)

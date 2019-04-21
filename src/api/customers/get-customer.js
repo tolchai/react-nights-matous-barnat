@@ -1,6 +1,8 @@
 import { api } from '../api-client'
+import { setCustomer } from '../../utils/customer'
 
-export const getUserById = async userId => {
-  const data = await api(`/api/customers/${userId}`)
+export const getCustomer = async id => {
+  const { data } = await api(`/api/customers/${id}`)
+  setCustomer(data)
   return data
 }

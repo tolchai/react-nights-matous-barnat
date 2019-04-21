@@ -18,7 +18,5 @@ export const api = async (url, options) => {
     ...options,
   })
 
-  //console.log(response)
-
   return response.json()
 }
