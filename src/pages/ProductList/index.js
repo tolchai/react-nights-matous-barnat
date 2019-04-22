@@ -39,7 +39,7 @@ const Products = ({ match, location, addProduct }) => {
     <Layout>
       <H1 textAlign="center">E-Commerce app</H1>
       Products per page:
-      <select value={count} onBlur={handleCount}>
+      <select value={count} onChange={handleCount} onBlur={handleCount}>
         <option value="9">9</option>
         <option value="25">25</option>
         <option value="50">50</option>
