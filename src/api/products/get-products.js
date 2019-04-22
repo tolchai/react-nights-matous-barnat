@@ -3,6 +3,8 @@ import { api } from '../api-client'
 import { formatProduct } from './utils/format-product'
 
 export const getProducts = async urlQuery => {
+  console.log(urlQuery)
+
   const { data, meta, included } = await api(
     `/api/skus?${qs.stringify({ include: 'prices', ...urlQuery })}`
   )
