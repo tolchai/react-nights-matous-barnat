@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import qs from 'qs'
 
@@ -20,20 +20,15 @@ const Products = ({ match, location, addProduct }) => {
 
   const { data: res, isLoading } = useApi(
     () => getProducts({ page: { number: page, size: count } }),
-    [page]
+    [page, count]
   )
 
-  useEffect(() => {
-    // TODO: Rerender here
-    // const res = useApi(
-    //   () => getProducts({ page: { number: page, size: count } }),
-    //   [page]
-    // )
-    // ERROR: Hooks can only be called inside the body of a function component.
-  })
-
   const handleAddToCart = productId => addProduct(productId)
-  const handleCount = event => setCount(event.target.value)
+  const handleCount = event => {
+    if (event.target.value !== count) {
+      setCount(event.target.value)
+    }
+  }
 
   return (
     <Layout>
