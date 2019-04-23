@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import qs from 'qs'
 
@@ -16,17 +16,29 @@ import { ProductsWrap } from './styled'
 
 const Products = ({ match, location, addProduct }) => {
   const { page } = qs.parse(location.search.substr(1))
+  const [count, setCount] = useState(25)
 
   const { data: res, isLoading } = useApi(
-    () => getProducts({ page: { number: page } }),
-    [page]
+    () => getProducts({ page: { number: page, size: count } }),
+    [page, count]
   )
 
   const handleAddToCart = productId => addProduct(productId)
+  const handleCount = event => {
+    if (event.target.value !== count) {
+      setCount(event.target.value)
+    }
+  }
 
   return (
     <Layout>
       <H1 textAlign="center">E-Commerce app</H1>
+      Products per page:
+      <select value={count} onChange={handleCount} onBlur={handleCount}>
+        <option value="9">9</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
       {isLoading && <Loader />}
       {res && (
         <>
