@@ -29,6 +29,10 @@ const LogInPage = ({ login, history }) => {
         password,
         push: history.push,
       })
+
+      toast.success('Logged in successfully', {
+        position: toast.POSITION.TOP_RIGHT,
+      })
     } catch (error) {
       if (error instanceof AsyncValidationError) {
         setFormAsyncError(error.message)
