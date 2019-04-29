@@ -1,7 +1,7 @@
 export default {
-  clientId: '1add790e25ab4f3b0724b593a09e1d1008fcce751d4c2b2f337353051f439eda',
+  clientId: '9fd02a643d129f1617f8f149f2642181f184e48873915f8159496eda7f568cbf',
   clientSecret:
-    'eac6464b9c4840222b1258732cb51c5db35ab472be4ba305b24813c8c0076839',
-  scope: 'market:710',
-  apiUrl: 'https://the-brown-brand-23.commercelayer.io',
+    '80521b9b66a7bf02b06e0a9f7a6a4244faf9d43d48418798c76947fa4d39aec1',
+  scope: 'market:451',
+  apiUrl: 'https://the-purple-brand-24.commercelayer.io',
 }

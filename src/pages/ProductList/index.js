@@ -4,6 +4,7 @@ import qs from 'qs'
 import compose from 'ramda/src/compose'
 import prop from 'ramda/src/prop'
 import tail from 'ramda/src/tail'
+import { toast } from 'react-toastify'
 
 import { getProducts } from '../../api/products/get-products'
 import { useApi } from '../../api/use-api'
@@ -34,7 +35,12 @@ const Products = ({ match, location, addProduct, history }) => {
     [page, size]
   )
 
-  const handleAddToCart = productId => addProduct(productId)
+  const handleAddToCart = productId => {
+    addProduct(productId)
+    toast.info('Product added to cart!', {
+      position: toast.POSITION.TOP_RIGHT,
+    })
+  }
   const handleSizeChange = newSize => {
     history.push(`/products?page=${page}&size=${newSize}`)
   }
