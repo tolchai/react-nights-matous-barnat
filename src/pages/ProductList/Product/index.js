@@ -6,7 +6,7 @@ import * as routes from '../../../routes'
 import { Wrapper, ImgWrap, Img, TitleWrap, Title, Price, Link } from './styled'
 
 const Product = ({ node, onAddToCart }) => (
-  <Wrapper>
+  <Wrapper data-testid="product-in-list">
     <Link to={routes.getProductDetailRoute(node.id)}>
       <ImgWrap>
         <Img src={node.image_url} alt={`${node.name} image`} />
@@ -27,4 +27,4 @@ const Product = ({ node, onAddToCart }) => (
   </Wrapper>
 )
 
-export default Product
+export { Product }
